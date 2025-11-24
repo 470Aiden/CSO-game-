@@ -1,1 +1,0 @@
-RasterForgeRegular-JpBgm.ttf
