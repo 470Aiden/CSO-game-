@@ -1,7 +1,7 @@
 import pygame
 import sys
 from buttons import Button
-
+from farmer_path import farmer_path
 pygame.init()
 # Set up the display
 screen = pygame.display.set_mode((1000, 800))
@@ -63,7 +63,8 @@ def play_screen():
                 for idx, rect in enumerate(slot_rects):
                     if rect.collidepoint((mx, my)):
                         selected = idx
-                        print(f"Selected character slot: {idx}")
+                        if idx == 0:
+                            farmer_path()
                         playing = False
 
         # Update animation frame timer
@@ -77,6 +78,7 @@ def play_screen():
         play_title = pygame.font.Font("Tiny5-Regular.ttf", 54).render("Select Character", True, (255, 255, 255))
         text_rect = play_title.get_rect(center=(screen_width // 2, 140))
         screen.blit(play_title, text_rect)
+        mouse = pygame.mouse.get_pos()
 
         # Draw slots and animations
         for i, rect in enumerate(slot_rects):
@@ -91,6 +93,10 @@ def play_screen():
                 frame = other_frames_1[frame_index % len(other_frames_1)]
             else:
                 frame = other_frames_2[frame_index % len(other_frames_2)]
+
+
+
+              
 
             # center frame inside slot
             f_rect = frame.get_rect(center=(rect.centerx, rect.centery - 10))
@@ -131,8 +137,7 @@ def main_menu():
         for event in pygame.event.get():
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if play_button.is_clicked(menu_mouse_pos):
-                    selection = play_screen()
-                    print(f"Returned selection: {selection}")
+                    play_screen()
                 if options_button.is_clicked(menu_mouse_pos):
                     print("Options button clicked")
                 if quit_button.is_clicked(menu_mouse_pos):
