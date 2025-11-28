@@ -1,0 +1,1 @@
+menu_bg = pygame.image.load("images\\menu_bg.jpg")

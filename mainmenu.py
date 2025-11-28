@@ -4,11 +4,11 @@ from buttons import Button
 from farmer_path import farmer_path
 pygame.init()
 # Set up the display
-screen = pygame.display.set_mode((1000, 800))
+screen = pygame.display.set_mode((1300, 800))
 
 # load background image
 menu_bg = pygame.image.load("images\\menu_bg.jpg")
-screen_width = 1000
+screen_width = 1300
 screen_height = 800
 menu_bg = pygame.transform.scale(menu_bg, (screen_width, screen_height))
 # create buttons
