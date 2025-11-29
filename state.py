@@ -6,44 +6,41 @@ from events import FinancialEvent
 
 class GameState:
     def __init__(self):
-        self.savings = 200  # total savings stored in pile
-        self.player_money = 0  # cash player is carrying
+        self.savings = 500
+        self.max_savings = 500
+        self.player_money = 0
+        self.events = []
 
-        self.events = []  # active financial events
-        self.last_event_time = 0
-
-        # Optional: Preload event images
+        # Load icons
         self.event_images = {
             "Rent Due": pygame.image.load("mr placeholder.jpg").convert_alpha(),
+            "Light Bill": pygame.image.load("mr placeholder.jpg").convert_alpha(),
             "Buy Shoes": pygame.image.load("mr placeholder.jpg").convert_alpha(),
-            "Light Bill": pygame.image.load("mr placeholder.jpg").convert_alpha()
         }
 
+        # Resize all icons
+        for k, img in self.event_images.items():
+            self.event_images[k] = pygame.transform.scale(img, (64, 64))
+
     def spawn_event(self):
-        """Creates a new financial event"""
-        event_types = [
-            ("Rent Due", 100, 20),
-            ("Light Bill", 60, 15),
-            ("Buy Shoes", 50, 25),  # distraction purchase
-        ]
+        import random
+        name, cost, duration = random.choice([
+            ("Rent Due", 100, 15),
+            ("Light Bill", 60, 12),
+            ("Buy Shoes", 50, 25),
+        ])
 
-        name, cost, duration = random.choice(event_types)
-
-        x = random.randint(100, 800)
+        x = random.randint(100, 900)
         y = random.randint(100, 700)
 
-        event = FinancialEvent(
-            x, y, 60, 60,
-            name, cost, duration,
-            image=self.event_images.get(name)
-        )
+        img = self.event_images[name]
 
+        event = FinancialEvent(x, y, 64, 64, name, cost, duration, image=img)
         self.events.append(event)
-
     def update(self):
-        """Updates event timers and removes expired ones"""
+        """Updates event timers and removes resolved events"""
         for event in self.events:
             event.update()
 
-        # Remove expired or completed
-        self.events = [e for e in self.events if not (e.expired or e.completed)]
+        # Remove events that are completed OR expired
+        self.events = [e for e in self.events if not (e.completed or e.expired)]

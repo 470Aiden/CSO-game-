@@ -6,89 +6,98 @@ from interactables import Interactable
 from state import GameState
 from savings import SavingsPile
 import time
+from HUD import HUD
 
 
 pygame.init()
 display = pygame.display.set_mode((1000, 800))
+menu_bg = pygame.image.load("images\\menu_bg.jpg")
 pygame.display.set_caption("Money Moves")
-
+hud = HUD()
+menu_bg = pygame.transform.scale(menu_bg, (1000, 800))
 def farmer_path():
-    """Main game loop for farmer character"""
+    display.blit(menu_bg, (0, 0))
+
     player = Character(200, 250)
     clock = pygame.time.Clock()
     running = True
+
     screen_width = 1000
     screen_height = 800
-    # Determine max sprite size from actual frames
-    interactables = [
-    Interactable(400, 300, 80, 80, "cash", "Collect money", "images\\cash pile.png")]
-    game_state = GameState()
-    savings_pile = SavingsPile(100, 600, 80, 80, game_state, "images\\cash pile.png")
 
-    spawn_cooldown = 10  # event every 10 seconds
+    game_state = GameState()
+
+    spawn_cooldown = 10
     last_spawn = time.time()
-    
-    sprite_width = 0
-    sprite_height = 0
-    for frames in player.animations.values():
-        if frames:
-            w, h = frames[0].get_size()
-            sprite_width = max(sprite_width, w)
-            sprite_height = max(sprite_height, h)
-    
+
+    # Determine max sprite size
+    sprite_width = max(f.get_width() for frames in player.animations.values() for f in frames)
+    sprite_height = max(f.get_height() for frames in player.animations.values() for f in frames)
+
     while running:
 
-              # Handle events
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
+        # events
+        for e in pygame.event.get():
+            if e.type == pygame.QUIT:
                 running = False
-        if time.time() - last_spawn > spawn_cooldown:
+
+        # spawn events
+        if time.time() - last_spawn >= spawn_cooldown:
             game_state.spawn_event()
             last_spawn = time.time()
-        # Handle input
+
         keys = pygame.key.get_pressed()
+
+        # Movement
         if keys[pygame.K_w]:
-            player.set_animation('walkup')
+            player.set_animation("walkup")
             player.y -= 5
         elif keys[pygame.K_s]:
-            player.set_animation('walkdown')
+            player.set_animation("walkdown")
             player.y += 5
         elif keys[pygame.K_a]:
-            player.set_animation('walkleft')
+            player.set_animation("walkleft")
             player.x -= 5
         elif keys[pygame.K_d]:
-            player.set_animation('walkright')
+            player.set_animation("walkright")
             player.x += 5
-        elif keys[pygame.K_e]:
-            player_rect = player.get_rect()
-            for obj in interactables:
-                if obj.check_near_player(player_rect):
-                    obj.interact()
         else:
             player.set_idle()
 
-        for event in game_state.events:
-            if event.rect.colliderect(player.get_rect()):
-                if keys[pygame.K_e]:  # interact button
-                    if game_state.player_money >= event.cost:
-                        game_state.player_money -= event.cost
+        # Interaction (independent of movement)
+        if keys[pygame.K_e]:
+            p_rect = player.get_rect()
+
+            for event in game_state.events:
+                if event.rect.colliderect(p_rect):
+                    if game_state.savings >= event.cost:
+                        game_state.savings -= event.cost
                         event.completed = True
-                        print(f"Paid {event.name}. Cost: ${event.cost}")
+                        print(f"Paid {event.name} (${event.cost})")
                     else:
                         print("Not enough money!")
 
-        # Clamp position to screen bounds
+        # clamp player
         player.x = max(0, min(player.x, screen_width - sprite_width))
         player.y = max(0, min(player.y, screen_height - sprite_height))
-        
 
-        # Update and render
+        # update events (remove expired/completed)
+        game_state.update()
+
+        # DRAWING
         clock.tick(60)
         display.fill((0, 0, 0))
-        for obj in interactables:
-            obj.draw(display)
+
+        # draw player
         player.update()
         player.draw(display)
+
+        # draw events (EVERY frame!)
+        for event in game_state.events:
+            event.draw(display)
+
+        # HUD
+        hud.draw_money_text(display, game_state.savings)
+        hud.draw_money_bar(display, game_state.savings, game_state.max_savings)
+
         pygame.display.flip()
-        
-        

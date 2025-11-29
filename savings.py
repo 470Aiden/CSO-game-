@@ -12,7 +12,6 @@ class SavingsPile(Interactable):
         amount = 20  
 
         if self.game_state.savings >= amount:
-            self.game_state.player_money += amount
             self.game_state.savings -= amount
             print(f"You withdrew ${amount}. Savings now ${self.game_state.savings}")
         else:
