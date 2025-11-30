@@ -25,11 +25,13 @@ def farmer_path():
 
     screen_width = 1170
     screen_height = 720
-    world_width = 1344
-    world_height = 768
+    world_width = 1600
+    world_height = 900
 
     game_state = GameState()
     camera = Camera(world_width, world_height, screen_width, screen_height)
+
+
 
     spawn_cooldown = 10
     last_spawn = time.time()
@@ -39,7 +41,7 @@ def farmer_path():
     sprite_height = max(f.get_height() for frames in player.animations.values() for f in frames)
 
     background = pygame.image.load("images\\farm aerial 2.png")
-    background = pygame.transform.scale(background, (screen_width, screen_height))
+    background = pygame.transform.scale(background, (screen_width * 2, screen_height * 2))
     level_manager = LevelManager()
     current_level = level_manager.get_current_level()
     current_level.start()
@@ -150,7 +152,7 @@ class Camera:
         self.world_height = world_height
         self.screen_width = screen_width
         self.screen_height = screen_height
-        self.camera = pygame.Rect(0, 0, world_width, world_height)
+        self.camera = pygame.Rect(0, 0, screen_width, screen_height)
 
     def apply(self, rect):
         return rect.move(-self.camera.x, -self.camera.y)
@@ -166,3 +168,4 @@ class Camera:
         y = max(0, min(y, self.camera.height - self.screen_height))
 
         self.camera.topleft = (x, y)
+        self.camera = pygame.Rect(x, y, self.screen_width, self.screen_height)
