@@ -8,8 +8,8 @@ class EndLevelPopup:
         self.height = 400
         self.bg_color = (40, 40, 60)
         self.border_color = (255, 200, 0)
-        self.title_font = pygame.font.Font(None, 48)
-        self.text_font = pygame.font.Font(None, 32)
+        self.title_font = pygame.font.Font("Tiny5-Regular.ttf", 48)
+        self.text_font = pygame.font.Font("Tiny5-Regular.ttf", 32)
         
     def draw(self, surface, level_num, rank, essentials, distractors, scams):
         """Draw the popup"""

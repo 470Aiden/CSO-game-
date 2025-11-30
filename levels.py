@@ -73,7 +73,7 @@ class LevelManager:
         """Create all levels with increasing difficulty"""
         return [
             # Level 1: Easy - 60 seconds, few events
-            Level(1, 60, 
+            Level(1, 6, 
                   [("Rent Due", 100, 20), ("Light Bill", 50, 15)],
                   [("Buy Shoes", 40, 20)]),
             
