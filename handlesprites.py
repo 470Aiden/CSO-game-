@@ -13,10 +13,10 @@ class Character:
             frame_w = sheet_w // num_frames
             frame_h = sheet_h
             
-            print(f"\n{filename}:")
-            print(f"  Sheet size: {sheet_w}x{sheet_h}")
-            print(f"  Frame size: {frame_w}x{frame_h}")
-            print(f"  Num frames: {num_frames}")
+            # print(f"\n{filename}:")
+            # print(f"  Sheet size: {sheet_w}x{sheet_h}")
+            # print(f"  Frame size: {frame_w}x{frame_h}")
+            # print(f"  Num frames: {num_frames}")
             
             frames = []
             for i in range(num_frames):
@@ -32,6 +32,7 @@ class Character:
                 print(f"  Frame {i}: {frame_surf.get_size()}")
             
             return frames
+            
     def __init__(self, x, y):
         self.x = x
         self.y = y
@@ -47,6 +48,7 @@ class Character:
         self.current_frame = 0
         self.frame_counter = 0
         self.animation_speed = 10
+        self.is_idle = False  # ADD THIS LINE
         
         # Scale all frames to 128px height
         # Scale all frames to SAME WIDTH + HEIGHT
@@ -82,9 +84,11 @@ class Character:
             self.animations[key] = uniform_frames
 
             
-          
     def update(self):
         """Update animation frame"""
+        if self.is_idle:  # ADD THIS CHECK
+            return  # Don't animate when idle
+            
         self.frame_counter += 1
         if self.frame_counter >= self.animation_speed:
             frames = self.animations[self.current_animation]
@@ -92,16 +96,10 @@ class Character:
             self.frame_counter = 0
     
     def draw(self, surface):
-        
         """Draw current frame"""
         frame = self.animations[self.current_animation][self.current_frame]
-        
-        # Clear a generous area around the sprite
-        clear_rect = pygame.Rect(self.x - 5, self.y - 5, 100, 100)  # Adjust size as needed
-        surface.fill((0, 0, 0), clear_rect)
-        
-        # Draw the frame
         surface.blit(frame, (self.x, self.y))
+        
     def set_animation(self, animation_name):
         """Change animation"""
         if animation_name != self.current_animation:
@@ -110,6 +108,7 @@ class Character:
             self.frame_counter = 0
             if "walk" in animation_name:
                 self.last_direction = animation_name.replace("walk", "")
+        self.is_idle = False  # ADD THIS LINE
     
     def set_idle(self):
         """Set idle pose (first frame of last direction)"""
@@ -118,6 +117,7 @@ class Character:
             self.current_animation = idle_animation
             self.current_frame = 0
             self.frame_counter = 0
+        self.is_idle = True  # ADD THIS LINE
 
     def get_rect(self):
         """Get collision rectangle for the character"""

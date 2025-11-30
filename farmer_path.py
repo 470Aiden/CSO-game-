@@ -11,18 +11,15 @@ from HUD import HUD
 
 pygame.init()
 display = pygame.display.set_mode((1000, 800))
-menu_bg = pygame.image.load("images\\menu_bg.jpg")
 pygame.display.set_caption("Money Moves")
 hud = HUD()
-menu_bg = pygame.transform.scale(menu_bg, (1000, 800))
 def farmer_path():
-    display.blit(menu_bg, (0, 0))
 
     player = Character(200, 250)
     clock = pygame.time.Clock()
     running = True
 
-    screen_width = 1000
+    screen_width = 1300
     screen_height = 800
 
     game_state = GameState()
@@ -34,7 +31,11 @@ def farmer_path():
     sprite_width = max(f.get_width() for frames in player.animations.values() for f in frames)
     sprite_height = max(f.get_height() for frames in player.animations.values() for f in frames)
 
+    background = pygame.image.load("images\\farm aerial 2.png")
+    background = pygame.transform.scale(background, (screen_width, screen_height))
+
     while running:
+        
 
         # events
         for e in pygame.event.get():
@@ -61,8 +62,8 @@ def farmer_path():
         elif keys[pygame.K_d]:
             player.set_animation("walkright")
             player.x += 5
-        else:
-            player.set_idle()
+        if not any([keys[pygame.K_w], keys[pygame.K_s], keys[pygame.K_a], keys[pygame.K_d]]) and player.current_animation.startswith('walk'):
+            player.set_idle()  
 
         # Interaction (independent of movement)
         if keys[pygame.K_e]:
@@ -86,7 +87,7 @@ def farmer_path():
 
         # DRAWING
         clock.tick(60)
-        display.fill((0, 0, 0))
+        display.blit(background, (0, 0))
 
         # draw player
         player.update()
