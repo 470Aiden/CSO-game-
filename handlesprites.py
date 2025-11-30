@@ -1,6 +1,7 @@
 import pygame
 import os 
 import sys
+import farmer_path
 
 sys.dont_write_bytecode = True
 class Character:
@@ -83,6 +84,7 @@ class Character:
 
             self.animations[key] = uniform_frames
 
+
             
     def update(self):
         """Update animation frame"""
@@ -94,11 +96,17 @@ class Character:
             frames = self.animations[self.current_animation]
             self.current_frame = (self.current_frame + 1) % len(frames)
             self.frame_counter = 0
-    
-    def draw(self, surface):
+
+
+    def draw(self, surface, camera):
         """Draw current frame"""
         frame = self.animations[self.current_animation][self.current_frame]
-        surface.blit(frame, (self.x, self.y))
+
+        rect = self.get_rect()
+        offset_rect = camera.apply(rect)
+
+        surface.blit(frame, offset_rect.topleft)
+        # surface.blit(frame, (self.x, self.y))
         
     def set_animation(self, animation_name):
         """Change animation"""

@@ -23,10 +23,13 @@ def farmer_path():
     clock = pygame.time.Clock()
     running = True
 
-    screen_width = 1300
-    screen_height = 800
+    screen_width = 1170
+    screen_height = 720
+    world_width = 1344
+    world_height = 768
 
     game_state = GameState()
+    camera = Camera(world_width, world_height, screen_width, screen_height)
 
     spawn_cooldown = 10
     last_spawn = time.time()
@@ -40,6 +43,8 @@ def farmer_path():
     level_manager = LevelManager()
     current_level = level_manager.get_current_level()
     current_level.start()
+
+
 
     while running:
         
@@ -58,16 +63,16 @@ def farmer_path():
 
         # Movement
         
-        if keys[pygame.K_w]:
+        if keys[pygame.K_w] or keys[pygame.K_UP]:
             player.set_animation("walkup")
             player.y -= 5
-        elif keys[pygame.K_s]:
+        elif keys[pygame.K_s] or keys[pygame.K_DOWN]:
             player.set_animation("walkdown")
             player.y += 5
-        elif keys[pygame.K_a]:
+        elif keys[pygame.K_a] or keys[pygame.K_LEFT]:
             player.set_animation("walkleft")
             player.x -= 5
-        elif keys[pygame.K_d]:
+        elif keys[pygame.K_d] or keys[pygame.K_RIGHT]:
             player.set_animation("walkright")
             player.x += 5
         if not any([keys[pygame.K_w], keys[pygame.K_s], keys[pygame.K_a], keys[pygame.K_d]]) and player.current_animation.startswith('walk'):
@@ -97,6 +102,9 @@ def farmer_path():
         player.x = max(0, min(player.x, screen_width - sprite_width))
         player.y = max(0, min(player.y, screen_height - sprite_height))
 
+        rect = player.get_rect()
+        camera.update(rect.centerx, rect.centery)
+
         # update events (remove expired/completed)
         game_state.update()
         if current_level.is_finished():
@@ -118,7 +126,7 @@ def farmer_path():
 
         # draw player
         player.update()
-        player.draw(display)
+        player.draw(display, camera)
 
         player_center = (player.x + sprite_width // 2, player.y + sprite_height // 2)
         for event in game_state.events:
@@ -135,3 +143,26 @@ def farmer_path():
         hud.draw_level_info(display, current_level)
 
         pygame.display.flip()
+
+class Camera:
+    def __init__(self, world_width, world_height, screen_width, screen_height):
+        self.world_width = world_width
+        self.world_height = world_height
+        self.screen_width = screen_width
+        self.screen_height = screen_height
+        self.camera = pygame.Rect(0, 0, world_width, world_height)
+
+    def apply(self, rect):
+        return rect.move(-self.camera.x, -self.camera.y)
+    
+    def update(self, targetx, targety):
+        x = targetx - self.screen_width // 2
+        y = targety - self.screen_height // 2
+
+        # limit scrolling to map size
+        x = min(0, x)  # left
+        y = min(0, y)  # top
+        x = max(0, min(x, self.camera.width - self.screen_width))
+        y = max(0, min(y, self.camera.height - self.screen_height))
+
+        self.camera.topleft = (x, y)

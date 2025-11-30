@@ -4,12 +4,12 @@ from buttons import Button
 from farmer_path import farmer_path
 pygame.init()
 # Set up the display
-screen = pygame.display.set_mode((1300, 800))
+screen = pygame.display.set_mode((1170, 720))
 
 # load background image
 menu_bg = pygame.image.load("images\\menu_bg.jpg")
-screen_width = 1300
-screen_height = 800
+screen_width = 1170
+screen_height = 720
 menu_bg = pygame.transform.scale(menu_bg, (screen_width, screen_height))
 # create buttons
 play_button = Button((screen_width // 2) - 100, 250, 200, 50, "Play", (25, 176, 70))
@@ -123,6 +123,7 @@ def main_menu():
         text_rect = menu_title.get_rect(center=(screen_width // 2, 150))
         screen.blit(menu_title, text_rect)
         menu_mouse_pos = pygame.mouse.get_pos()
+
         #places buttons on the screen
         play_button.draw(screen)
         options_button.draw(screen)
