@@ -30,3 +30,11 @@ class HUD:
 
         # Pixel outline
         pygame.draw.rect(surface, self.pixel_edge, (x, y, self.bar_width, self.bar_height), 3)
+    def draw_level_info(self, surface, level):
+        font = pygame.font.Font("Tiny5-Regular.ttf", 36)
+
+        text = font.render(f"Level {level.level_num}", True, (255, 255, 255))
+        surface.blit(text, (20, 140))
+
+        timer = font.render(f"Time: {int(level.get_remaining_time())}", True, (255, 255, 0))
+        surface.blit(timer, (20, 180))

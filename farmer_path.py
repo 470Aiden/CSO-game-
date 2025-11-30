@@ -7,7 +7,9 @@ from state import GameState
 from savings import SavingsPile
 import time
 from HUD import HUD
-
+from arrow import Arrow
+from levels import LevelManager
+from post_level_stats import EndLevelPopup
 
 pygame.init()
 display = pygame.display.set_mode((1000, 800))
@@ -15,6 +17,8 @@ pygame.display.set_caption("Money Moves")
 hud = HUD()
 def farmer_path():
 
+   
+    arrow = Arrow()
     player = Character(200, 250)
     clock = pygame.time.Clock()
     running = True
@@ -33,23 +37,27 @@ def farmer_path():
 
     background = pygame.image.load("images\\farm aerial 2.png")
     background = pygame.transform.scale(background, (screen_width, screen_height))
+    level_manager = LevelManager()
+    current_level = level_manager.get_current_level()
+    current_level.start()
 
     while running:
         
-
+       
         # events
         for e in pygame.event.get():
             if e.type == pygame.QUIT:
                 running = False
 
         # spawn events
-        if time.time() - last_spawn >= spawn_cooldown:
-            game_state.spawn_event()
+        if time.time() - last_spawn >= 5:  # every 5 seconds spawn level-based events
+            level_manager.spawn_event_for_level(current_level, game_state)
             last_spawn = time.time()
 
         keys = pygame.key.get_pressed()
 
         # Movement
+        
         if keys[pygame.K_w]:
             player.set_animation("walkup")
             player.y -= 5
@@ -74,7 +82,14 @@ def farmer_path():
                     if game_state.savings >= event.cost:
                         game_state.savings -= event.cost
                         event.completed = True
+                        if event.event_type == "essential":
+                            level_manager.essentials_completed += 1
+                        elif event.event_type == "distractor":
+                            level_manager.distractors_bought += 1
+                        elif event.event_type == "scam":
+                            level_manager.scams_fell_for += 1
                         print(f"Paid {event.name} (${event.cost})")
+
                     else:
                         print("Not enough money!")
 
@@ -84,14 +99,31 @@ def farmer_path():
 
         # update events (remove expired/completed)
         game_state.update()
+        if current_level.is_finished():
+            print(f"Level {current_level.level_num} finished!")
 
+            level_manager.next_level()
+            current_level = level_manager.get_current_level()
+
+            if current_level is None:
+                print("GAME COMPLETE!")
+                running = False
+                continue
+            game_state.savings = game_state.max_savings
+            current_level.start()
         # DRAWING
         clock.tick(60)
+        dt = clock.get_time() / 16  # 16ms is 60 FPS baseline
         display.blit(background, (0, 0))
 
         # draw player
         player.update()
         player.draw(display)
+
+        player_center = (player.x + sprite_width // 2, player.y + sprite_height // 2)
+        for event in game_state.events:
+            event_center = (event.rect.centerx, event.rect.centery)
+            arrow.draw(display, player_center, event_center)
 
         # draw events (EVERY frame!)
         for event in game_state.events:
@@ -100,5 +132,6 @@ def farmer_path():
         # HUD
         hud.draw_money_text(display, game_state.savings)
         hud.draw_money_bar(display, game_state.savings, game_state.max_savings)
+        hud.draw_level_info(display, current_level)
 
         pygame.display.flip()
