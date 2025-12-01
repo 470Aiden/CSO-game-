@@ -95,9 +95,6 @@ def play_screen():
                 frame = other_frames_2[frame_index % len(other_frames_2)]
 
 
-
-              
-
             # center frame inside slot
             f_rect = frame.get_rect(center=(rect.centerx, rect.centery - 10))
             screen.blit(frame, f_rect)

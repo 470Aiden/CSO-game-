@@ -73,20 +73,20 @@ class LevelManager:
         """Create all levels with increasing difficulty"""
         return [
             # Level 1: Easy - 60 seconds, few events
-            Level(1, 6, 
-                  [("Rent Due", 100, 20), ("Light Bill", 50, 15)],
+            Level(1, 60, 
+                  [("Rent Due", 100, 20), ("Light Bill", 50, 15), ("Manure", 30, 10), ("Chicken Feed", 20, 15)],
                   [("Buy Shoes", 40, 20)]),
             
             # Level 2: Medium - 90 seconds, more events
             Level(2, 90,
-                  [("Rent Due", 100, 18), ("Light Bill", 50, 15), ("Water Bill", 30, 12)],
+                  [("Rent Due", 100, 18), ("Light Bill", 50, 15), ("Water Bill", 30, 12), ("Manure", 30, 10), ("Chicken Feed", 20, 15)],
                   [("Buy Video Game", 60, 15), ("Buy Shoes", 40, 18)]),
             
             # Level 3: Hard - 120 seconds, shorter time limits, scams
             Level(3, 120,
                   [("Rent Due", 120, 15), ("Light Bill", 60, 12), ("Water Bill", 40, 10)],
                   [("Expensive Phone", 200, 20), ("Buy Video Game", 60, 12), ("Buy Shoes", 40, 15)],
-                  [("Lottery Ticket", 20, 25), ("Fake Investment", 100, 20)]),
+                  [("Lottery Ticket", 20, 25), ("Crypto Investment", 100, 20)]),
             
             # Level 4: Very Hard - 150 seconds, many events
             Level(4, 150,

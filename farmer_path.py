@@ -2,9 +2,7 @@ import pygame
 import os
 from buttons import Button
 from handlesprites import Character
-from interactables import Interactable
 from state import GameState
-from savings import SavingsPile
 import time
 from HUD import HUD
 from arrow import Arrow
@@ -18,16 +16,22 @@ background = pygame.image.load("images\\farm aerial 2.png")
 pygame.display.set_caption("Money Moves")
 hud = HUD()
 background = pygame.transform.scale(background, (1170, 720))
-camera = Camera(2000, 2000, 1170, 720)
+
+
+
 
 def farmer_path():
+
+    world_width = 2000
+    world_height = 1500
+    zoom = 1.4
     player = Character(200, 250)
     clock = pygame.time.Clock()
     running = True
 
     screen_width = 1170
     screen_height = 720
-
+    camera = Camera(world_width, world_height, screen_width, screen_height, zoom=zoom)
     game_state = GameState()
     level_manager = LevelManager()
     arrow = Arrow()
@@ -43,12 +47,12 @@ def farmer_path():
 
     # Level completion state
     showing_popup = False
-    level_complete = False
+
 
     # Determine max sprite size
     sprite_width = max(f.get_width() for frames in player.animations.values() for f in frames)
     sprite_height = max(f.get_height() for frames in player.animations.values() for f in frames)
-
+    
     while running:
         # Events
         for e in pygame.event.get():
@@ -59,6 +63,7 @@ def farmer_path():
             if e.type == pygame.KEYDOWN:
                 if showing_popup and e.key == pygame.K_SPACE:
                     # Move to next level
+                    game_state.savings = game_state.max_savings
                     level_manager.next_level()
                     current_level = level_manager.get_current_level()
                     
@@ -132,30 +137,61 @@ def farmer_path():
                             print("Not enough money!")
 
             # Clamp player to new screen bounds
-            player.x = max(0, min(player.x, screen_width - sprite_width))
-            player.y = max(0, min(player.y, screen_height - sprite_height))
+            player.x = max(0, min(player.x, world_width - sprite_width))
+            player.y = max(0, min(player.y, world_height - sprite_height))
 
             # Update events (remove expired/completed)
             game_state.update()
 
+        player_center_x = player.x + sprite_width // 2
+        player_center_y = player.y + sprite_height // 2
+        camera.update(player_center_x, player_center_y)
+
         # DRAWING
         clock.tick(60)
-        display.blit(background, (0, 0))
+
+
+        for x in range(0, world_width, screen_width):
+            for y in range(0, world_height, screen_height):
+                bg_pos = camera.apply_pos(x,y)
+                display.blit(background, bg_pos)
+
+         # Draw events
+        for event in game_state.events:
+            event_screen_rect = camera.apply(event.rect)
+            # Save original rect
+            original_rect = event.rect.copy()
+            # Temporarily change to screen position
+            event.rect = event_screen_rect
+            event.draw(display)
+            # Restore original rect
+            event.rect = original_rect
 
         # Draw player
         player.update()
-        player.draw(display,camera)
+        player_rect = pygame.Rect(player.x, player.y, sprite_width, sprite_height)
+        player_screen_rect = camera.apply(player_rect)
+
+        # Temporarily change player position for drawing
+        temp_x, temp_y = player.x, player.y
+        player.x = player_screen_rect.x
+        player.y = player_screen_rect.y
+        player.draw(display)
+        player.x, player.y = temp_x, temp_y
+
+        
 
         # Draw arrows pointing to each event
         if not showing_popup:
-            player_center = (player.x + sprite_width // 2, player.y + sprite_height // 2)
-            for event in game_state.events:
-                event_center = (event.rect.centerx, event.rect.centery)
-                arrow.draw(display, player_center, event_center)
+            player_center_x = player_screen_rect.centerx
+            player_center_y = player_screen_rect.centery
+            player_center = (player_center_x, player_center_y)
 
-        # Draw events
-        for event in game_state.events:
-            event.draw(display)
+            for event in game_state.events:
+                event_screen_rect = camera.apply(event.rect)
+                event_center = (event_screen_rect.centerx, event_screen_rect.centery)
+                arrow.draw(display, player_center, event_center)
+       
 
         # HUD
         hud.draw_money_text(display, game_state.savings)

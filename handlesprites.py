@@ -98,14 +98,14 @@ class Character:
             self.frame_counter = 0
 
 
-    def draw(self, surface, camera):
+    def draw(self, surface):
         """Draw current frame"""
         frame = self.animations[self.current_animation][self.current_frame]
 
         rect = self.get_rect()
-        offset_rect = camera.apply(rect)
+      
 
-        surface.blit(frame, offset_rect.topleft)
+        surface.blit(frame, (self.x, self.y))
         # surface.blit(frame, (self.x, self.y))
         
     def set_animation(self, animation_name):
