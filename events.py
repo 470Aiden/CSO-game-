@@ -1,6 +1,6 @@
 import pygame
 import time
-import interactables
+
 
 display = pygame.display.set_mode((1000, 800))
 

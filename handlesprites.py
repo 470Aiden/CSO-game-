@@ -14,11 +14,6 @@ class Character:
             frame_w = sheet_w // num_frames
             frame_h = sheet_h
             
-            # print(f"\n{filename}:")
-            # print(f"  Sheet size: {sheet_w}x{sheet_h}")
-            # print(f"  Frame size: {frame_w}x{frame_h}")
-            # print(f"  Num frames: {num_frames}")
-            
             frames = []
             for i in range(num_frames):
                 # Create new surface
