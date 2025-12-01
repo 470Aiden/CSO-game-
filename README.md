@@ -38,11 +38,8 @@ Money movement, fintech, financial education
 
 ### Technologies Used
 - Python
-- Pygame
+- Pygame-ce
 ```
 
-**Step 5: Get your links for the form**
 
-**Link to repository:**
-```
-https://github.com/YOUR_USERNAME/YOUR_REPO_NAME
+
