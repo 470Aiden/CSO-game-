@@ -73,7 +73,7 @@ class LevelManager:
         """Create all levels with increasing difficulty"""
         return [
             # Level 1: Easy - 60 seconds, few events
-            Level(1, 60, 
+            Level(1, 6, 
                   [("Rent Due", 100, 20), ("Light Bill", 50, 15), ("Manure", 30, 10), ("Chicken Feed", 20, 15)],
                   [("Buy Shoes", 40, 20)]),
             
@@ -130,8 +130,8 @@ class LevelManager:
         event_type, name, cost, time_limit = random.choice(all_events)
         
         # Random position
-        x = random.randint(100, 900)
-        y = random.randint(100, 700)
+        x = random.randint(400, 800)
+        y = random.randint(300, 800)
         
         # Get image
         img = self.event_images.get(name, self.event_images["Rent Due"])

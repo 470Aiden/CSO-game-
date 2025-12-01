@@ -9,13 +9,14 @@ from arrow import Arrow
 from levels import LevelManager
 from post_level_stats import EndLevelPopup
 from camera import Camera 
+from drawbackground import draw_background
 
 pygame.init()
 display = pygame.display.set_mode((1170, 720))
-background = pygame.image.load("images\\farm aerial 2.png")
+background = pygame.image.load("images\\farm aerial 2.png").convert()
 pygame.display.set_caption("Money Moves")
 hud = HUD()
-background = pygame.transform.scale(background, (1170, 720))
+background = pygame.transform.scale(background, (2000, 1500))
 
 
 
@@ -150,11 +151,9 @@ def farmer_path():
         # DRAWING
         clock.tick(60)
 
-
-        for x in range(0, world_width, screen_width):
-            for y in range(0, world_height, screen_height):
-                bg_pos = camera.apply_pos(x,y)
-                display.blit(background, bg_pos)
+        
+        
+        draw_background(display, background, player_center_x, player_center_y, world_width, world_height)
 
          # Draw events
         for event in game_state.events:

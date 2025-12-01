@@ -31,11 +31,41 @@ class EndLevelPopup:
         rank_colors = {"S": (255, 215, 0), "A": (0, 255, 0), "B": (100, 200, 255), 
                       "C": (255, 165, 0), "D": (255, 50, 50)}
         rank_color = rank_colors.get(rank, (255, 255, 255))
-        rank_text = self.title_font.render(f"Rank: {rank}", True, rank_color)
-        surface.blit(rank_text, (x + 170, y + 90))
+        if rank =="S":
+            rank_text = self.title_font.render(f"Rank: {rank}  ", True, rank_color)
+            line1 = self.title_font.render(" You spent your money purely on essentials!", True, rank_color)
+            line2 = self.title_font.render(" You sure know how to save money", True, rank_color)
+            surface.blit(rank_text, (x + 170, y + 90))
+            surface.blit(line1, (x + 20, y + 130))
+            surface.blit(line2, (x + 40, y + 170))
+
+        elif rank =="A":
+            rank_text = self.title_font.render(f"Rank: {rank}  ", True, rank_color)
+            line1 = self.text_font.render(" Always remember to spend money on necessary purchases.", True, rank_color)
+            line2 = self.text_font.render("Great job nonetheless", True, rank_color)
+            surface.blit(rank_text, (x + 170, y + 90))
+            surface.blit(line1, (x + 30, y + 130))
+            surface.blit(line2, (x + 80, y + 170))
+        elif rank =="B":
+            rank_text = self.title_font.render(f"Rank: {rank} ", True, rank_color)
+            line1 = self.text_font.render(" You spent your money purely on essentials!", True, rank_color)
+            line2 = self.text_font.render(" You sure know how to save money", True, rank_color)
+            surface.blit(rank_text, (x + 90, y + 90))
+        if rank =="C":
+            rank_text = self.title_font.render(f"Rank: {rank} ", True, rank_color)
+            line1 = self.text_font.render("Focus more on essentials. ", True, rank_color)
+            surface.blit(rank_text, (x + 90, y + 90))
+            surface.blit(line1, (x + 90, y + 130))
+        elif rank =="D":
+            rank_text = self.title_font.render(f"Rank: {rank}  ", True, rank_color)
+            line1 = self.text_font.render("You spent your money poorly.", True, rank_color)
+            line2 = self.text_font.render("You must focus on on essentials", True, rank_color)
+            surface.blit(rank_text, (x + 170, y + 90))
+            surface.blit(line1, (x + 80, y + 130))
+            surface.blit(line2, (x + 40, y + 170))
         
         # Stats
-        stats_y = y + 160
+        stats_y = y + 240
         stats = [
             f"Essential Purchases: {essentials}",
             f"Distractor Purchases: {distractors}",
@@ -44,7 +74,7 @@ class EndLevelPopup:
         
         for i, stat in enumerate(stats):
             text = self.text_font.render(stat, True, (255, 255, 255))
-            surface.blit(text, (x + 60, stats_y + i * 40))
+            surface.blit(text, (x + 90, stats_y + i * 30))
         
         # Continue prompt
         prompt = self.text_font.render("Press SPACE to continue", True, (255, 255, 0))
