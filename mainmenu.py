@@ -3,6 +3,14 @@ import sys
 from buttons import Button
 from farmer_path import farmer_path
 pygame.init()
+pygame.mixer.init()
+
+# Load the music file
+pygame.mixer.music.load('caribbean-beach.mp3')
+
+# Play the music in a loop
+pygame.mixer.music.play(-1)
+
 # Set up the display
 screen = pygame.display.set_mode((1170, 720))
 
