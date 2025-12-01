@@ -95,19 +95,19 @@ def farmer_path():
 
             # Movement
             is_moving = False
-            if keys[pygame.K_w]:
+            if keys[pygame.K_w] or keys[pygame.K_UP]:
                 player.set_animation("walkup")
                 player.y -= 5
                 is_moving = True
-            elif keys[pygame.K_s]:
+            elif keys[pygame.K_s] or keys[pygame.K_DOWN]:
                 player.set_animation("walkdown")
                 player.y += 5
                 is_moving = True
-            elif keys[pygame.K_a]:
+            elif keys[pygame.K_a] or keys[pygame.K_LEFT]:
                 player.set_animation("walkleft")
                 player.x -= 5
                 is_moving = True
-            elif keys[pygame.K_d]:
+            elif keys[pygame.K_d] or keys[pygame.K_RIGHT]:
                 player.set_animation("walkright")
                 player.x += 5
                 is_moving = True
