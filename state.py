@@ -1,6 +1,6 @@
 import random
 import pygame
-from interactables import Interactable
+
 from events import FinancialEvent  
 
 
@@ -13,9 +13,9 @@ class GameState:
 
         # Load icons
         self.event_images = {
-            "Rent Due": pygame.image.load("mr placeholder.jpg").convert_alpha(),
-            "Light Bill": pygame.image.load("mr placeholder.jpg").convert_alpha(),
-            "Buy Shoes": pygame.image.load("mr placeholder.jpg").convert_alpha(),
+            "Rent Due": pygame.image.load("images\\rent due.png").convert_alpha(),
+            "Light Bill": pygame.image.load("images\\light bill icon.png").convert_alpha(),
+            "Buy Shoes": pygame.image.load("images\\shoe.png").convert_alpha(),
         }
 
         # Resize all icons

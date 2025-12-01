@@ -1,17 +1,45 @@
-# CSO-game- 
-Uses pygame for graphics, gameplay, and everything in between
+# Money Moves - Financial Education Game
 
-CONTROLS:
+## CSO 2026 Computer Coding Olympiad - Level II
 
-W or up arrow key - move up
-A or left arrow key - move left
-S or down arrow key - move down
-D or right arrow key - move right
+### Team Members
+- Aiden Bramwell, Jaheim Smart, Alyssa Nelson
+- Campion College
 
-E - Interact
+### About
+Money Moves is a financial literacy game where players manage money, pay essential bills, avoid distractors, and learn to recognize scams in a Caribbean context.
 
-Coming soon:
-- sfx for events and interactions
-- additional characters and storylines
-- more difficult levels
+### How to Run
+HOW TO RUN THE CODE:
+
+1. Download the repository:
+   - Click the green "Code" button on GitHub
+   - Select "Download ZIP"
+   - Extract the ZIP file to a folder
+
+2. Install Python 3.7 or higher (if not already installed)
+   Download from: https://www.python.org/downloads/
+
+3. Install Pygame:
+   pip install -r requirements.txt
+
+4. Run the game:
+   Navigate to the extracted folder and run:
+   python mainmenu.py
+
+
+### Controls
+- WASD - Move character
+- E - Interact with events
+- SPACE - Continue to next level
+
+### Challenge Category
+Money movement, fintech, financial education
+
+### Technologies Used
+- Python
+- Pygame-ce
+```
+
+
 
