@@ -29,7 +29,7 @@ HOW TO RUN THE CODE:
 
 
 ### Controls
-- WASD - Move character
+- WASD or arrow keuys - Move character
 - E - Interact with events
 - SPACE - Continue to next level
 
