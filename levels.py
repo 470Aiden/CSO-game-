@@ -54,14 +54,15 @@ class LevelManager:
     def load_event_images(self):
         """Load and scale event icons"""
         images = {
-            "Rent Due": pygame.image.load("mr placeholder.jpg").convert_alpha(),
-            "Light Bill": pygame.image.load("mr placeholder.jpg").convert_alpha(),
-            "Water Bill": pygame.image.load("mr placeholder.jpg").convert_alpha(),
-            "Buy Shoes": pygame.image.load("mr placeholder.jpg").convert_alpha(),
+            "Rent Due": pygame.image.load("images\rent due.png").convert_alpha(),
+            "Light Bill": pygame.image.load("images\\light bill icon.png").convert_alpha(),
+            "fertilizer": pygame.image.load("images\\fertilizer.png").convert_alpha(),
+            "Water Bill": pygame.image.load("images\\water bill.png").convert_alpha(),
+            "Buy Shoes": pygame.image.load("images\\shoe.png").convert_alpha(),
             "Buy Video Game": pygame.image.load("mr placeholder.jpg").convert_alpha(),
             "Expensive Phone": pygame.image.load("mr placeholder.jpg").convert_alpha(),
-            "Lottery Ticket": pygame.image.load("mr placeholder.jpg").convert_alpha(),
-            "Fake Investment": pygame.image.load("mr placeholder.jpg").convert_alpha(),
+            "Lottery Ticket": pygame.image.load("images\\lottery ticket.png").convert_alpha(),
+            "Crypto Investment": pygame.image.load("images\\crypto.png").convert_alpha(),
         }
         
         for k in images:
@@ -74,12 +75,12 @@ class LevelManager:
         return [
             # Level 1: Easy - 60 seconds, few events
             Level(1, 6, 
-                  [("Rent Due", 100, 20), ("Light Bill", 50, 15), ("Manure", 30, 10), ("Chicken Feed", 20, 15)],
+                  [("Rent Due", 100, 20), ("Light Bill", 50, 15), ("Manure", 30, 10), ("Fertilizer", 20, 15)],
                   [("Buy Shoes", 40, 20)]),
             
             # Level 2: Medium - 90 seconds, more events
             Level(2, 90,
-                  [("Rent Due", 100, 18), ("Light Bill", 50, 15), ("Water Bill", 30, 12), ("Manure", 30, 10), ("Chicken Feed", 20, 15)],
+                  [("Rent Due", 100, 18), ("Light Bill", 50, 15), ("Water Bill", 30, 12), ("Fertilizer", 20, 15)],
                   [("Buy Video Game", 60, 15), ("Buy Shoes", 40, 18)]),
             
             # Level 3: Hard - 120 seconds, shorter time limits, scams
