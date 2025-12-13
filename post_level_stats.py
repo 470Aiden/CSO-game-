@@ -8,8 +8,8 @@ class EndLevelPopup:
         self.height = 400
         self.bg_color = (40, 40, 60)
         self.border_color = (255, 200, 0)
-        self.title_font = pygame.font.Font("Tiny5-Regular.ttf", 48)
-        self.text_font = pygame.font.Font("Tiny5-Regular.ttf", 32)
+        self.title_font = pygame.font.Font("CSO-game-\\Tiny5-Regular.ttf", 48)
+        self.text_font = pygame.font.Font("CSO-game-\\Tiny5-Regular.ttf", 25)
         
     def draw(self, surface, level_num, rank, essentials, distractors, scams):
         """Draw the popup"""
@@ -33,23 +33,23 @@ class EndLevelPopup:
         rank_color = rank_colors.get(rank, (255, 255, 255))
         if rank =="S":
             rank_text = self.title_font.render(f"Rank: {rank}  ", True, rank_color)
-            line1 = self.title_font.render(" You spent your money purely on essentials!", True, rank_color)
-            line2 = self.title_font.render(" You sure know how to save money", True, rank_color)
+            line1 = self.title_font.render("money spent purely ", True, rank_color)
+            line2 = self.title_font.render("on essentials!", True, rank_color)
             surface.blit(rank_text, (x + 170, y + 90))
             surface.blit(line1, (x + 20, y + 130))
             surface.blit(line2, (x + 40, y + 170))
 
         elif rank =="A":
             rank_text = self.title_font.render(f"Rank: {rank}  ", True, rank_color)
-            line1 = self.text_font.render(" Always remember to spend money on necessary purchases.", True, rank_color)
-            line2 = self.text_font.render("Great job nonetheless", True, rank_color)
+            line1 = self.text_font.render("Great job! But remember to spend ", True, rank_color)
+            line2 = self.text_font.render("money on essentials.", True, rank_color)
             surface.blit(rank_text, (x + 170, y + 90))
             surface.blit(line1, (x + 30, y + 130))
             surface.blit(line2, (x + 80, y + 170))
         elif rank =="B":
             rank_text = self.title_font.render(f"Rank: {rank} ", True, rank_color)
-            line1 = self.text_font.render(" You spent your money purely on essentials!", True, rank_color)
-            line2 = self.text_font.render(" You sure know how to save money", True, rank_color)
+            line1 = self.text_font.render("Good! But", True, rank_color)
+            line2 = self.text_font.render("you can do better", True, rank_color)
             surface.blit(rank_text, (x + 90, y + 90))
         if rank =="C":
             rank_text = self.title_font.render(f"Rank: {rank} ", True, rank_color)

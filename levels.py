@@ -54,14 +54,14 @@ class LevelManager:
     def load_event_images(self):
         """Load and scale event icons"""
         images = {
-            "Rent Due": pygame.image.load("images\\rent due.png").convert_alpha(),
-            "Light Bill": pygame.image.load("images\\light bill icon.png").convert_alpha(),
-            "Fertilizer": pygame.image.load("images\\fertilizer.png").convert_alpha(),
-            "Water Bill": pygame.image.load("images\\water bill.png").convert_alpha(),
-            "Buy Shoes": pygame.image.load("images\\shoe.png").convert_alpha(),
-            "Expensive Phone": pygame.image.load("images\\phone.png").convert_alpha(),
-            "Lottery Ticket": pygame.image.load("images\\lottery ticket.png").convert_alpha(),
-            "Crypto Investment": pygame.image.load("images\\crypto.png").convert_alpha(),
+            "Rent Due": pygame.image.load("CSO-game-\\images\\rent due.png").convert_alpha(),
+            "Light Bill": pygame.image.load("CSO-game-\\images\\light bill icon.png").convert_alpha(),
+            "Fertilizer": pygame.image.load("CSO-game-\\images\\fertilizer.png").convert_alpha(),
+            "Water Bill": pygame.image.load("CSO-game-\\images\\water bill.png").convert_alpha(),
+            "Buy Shoes": pygame.image.load("CSO-game-\\images\\shoe.png").convert_alpha(),
+            "Expensive Phone": pygame.image.load("CSO-game-\\images\\phone.png").convert_alpha(),
+            "Lottery Ticket": pygame.image.load("CSO-game-\\images\\lottery ticket.png").convert_alpha(),
+            "Crypto Investment": pygame.image.load("CSO-game-\\images\\crypto.png").convert_alpha(),
         }
         
         for k in images:
@@ -72,24 +72,24 @@ class LevelManager:
     def create_levels(self):
         """Create all levels with increasing difficulty"""
         return [
-            # Level 1: Easy - 60 seconds, few events
+            # Level 1: Easy
             Level(1, 60, 
-                  [("Rent Due", 100, 20), ("Light Bill", 50, 15), ("Manure", 30, 10), ("Fertilizer", 20, 15)],
+                  [("Rent Due", 100, 20), ("Light Bill", 50, 15), ("Fertilizer", 20, 15)],
                   [("Buy Shoes", 40, 20)]),
             
-            # Level 2: Medium - 90 seconds, more events
-            Level(2, 60,
+            # Level 2: Medium 
+            Level(2, 50,
                   [("Rent Due", 100, 18), ("Light Bill", 50, 15), ("Water Bill", 30, 12), ("Fertilizer", 20, 15)],
                   [("Buy Shoes", 40, 18)]),
             
-            # Level 3: Hard - 120 seconds, shorter time limits, scams
-            Level(3, 90,
+            # Level 3: Hard 
+            Level(3, 45,
                   [("Rent Due", 120, 15), ("Light Bill", 60, 12), ("Water Bill", 40, 10)],
                   [("Expensive Phone", 200, 20), ("Buy Shoes", 40, 15)],
                   [("Lottery Ticket", 20, 25), ("Crypto Investment", 100, 20)]),
             
-            # Level 4: Very Hard - 150 seconds, many events
-            Level(4, 90,
+            # Level 4: Very Hard
+            Level(4, 45,
                   [("Rent Due", 150, 12), ("Light Bill", 70, 10), ("Water Bill", 50, 8)],
                   [("Expensive Phone", 250, 15), ("Buy Shoes", 50, 12)],
                   [("Lottery Ticket", 30, 20), ("Fake Investment", 150, 18)]),
@@ -130,8 +130,8 @@ class LevelManager:
         event_type, name, cost, time_limit = random.choice(all_events)
         
         # Random position
-        x = random.randint(400, 800)
-        y = random.randint(300, 800)
+        x = random.randint(400, 1500)
+        y = random.randint(300, 1200)
         
         # Get image
         img = self.event_images.get(name, self.event_images["Rent Due"])

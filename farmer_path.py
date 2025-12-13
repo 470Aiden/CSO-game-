@@ -13,7 +13,7 @@ from drawbackground import draw_background
 
 pygame.init()
 display = pygame.display.set_mode((1170, 720))
-background = pygame.image.load("images\\farm aerial 2.png").convert()
+background = pygame.image.load("CSO-game-\\images\\farm aerial 2.png").convert()
 pygame.display.set_caption("Money Moves")
 hud = HUD()
 background = pygame.transform.scale(background, (2000, 1500))
@@ -199,7 +199,7 @@ def farmer_path():
         # Draw level timer
         if current_level:
             remaining = int(current_level.get_remaining_time())
-            timer_font = pygame.font.Font("Tiny5-Regular.ttf", 36)
+            timer_font = pygame.font.Font("CSO-game-\\Tiny5-Regular.ttf", 36)
             timer_text = timer_font.render(f"Time: {remaining}s", True, (255, 255, 255))
             display.blit(timer_text, (20, 100))
             

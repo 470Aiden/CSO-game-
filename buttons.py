@@ -31,7 +31,7 @@ class Button:
         pygame.draw.rect(surface, current_color, self.rect)
         
         # Draw text
-        text_surface = pygame.font.Font("Tiny5-Regular.ttf", 36).render(self.text, True, (255, 255, 255))
+        text_surface = pygame.font.Font("CSO-game-\\Tiny5-Regular.ttf", 36).render(self.text, True, (255, 255, 255))
         text_rect = text_surface.get_rect(center=self.rect.center)
         surface.blit(text_surface, text_rect)
     
