@@ -13,9 +13,10 @@ class GameState:
 
         # Load icons
         self.event_images = {
-            "Rent Due": pygame.image.load("CSO-game-\\images\\rent due.png").convert_alpha(),
-            "Light Bill": pygame.image.load("CSO-game-\\images\\light bill icon.png").convert_alpha(),
-            "Buy Shoes": pygame.image.load("CSO-game-\\images\\shoe.png").convert_alpha(),
+            
+            "Rent Due": pygame.image.load("images\\rent due.png").convert_alpha(),
+            "Light Bill": pygame.image.load("images\\light bill icon.png").convert_alpha(),
+            "Buy Shoes": pygame.image.load("images\\shoe.png").convert_alpha(),
         }
 
         # Resize all icons

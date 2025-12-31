@@ -8,8 +8,8 @@ class EndLevelPopup:
         self.height = 400
         self.bg_color = (40, 40, 60)
         self.border_color = (255, 200, 0)
-        self.title_font = pygame.font.Font("CSO-game-\\Tiny5-Regular.ttf", 48)
-        self.text_font = pygame.font.Font("CSO-game-\\Tiny5-Regular.ttf", 25)
+        self.title_font = pygame.font.Font("Tiny5-Regular.ttf", 48)
+        self.text_font = pygame.font.Font("Tiny5-Regular.ttf", 25)
         
     def draw(self, surface, level_num, rank, essentials, distractors, scams):
         """Draw the popup"""
@@ -66,15 +66,23 @@ class EndLevelPopup:
         
         # Stats
         stats_y = y + 240
-        stats = [
-            f"Essential Purchases: {essentials}",
-            f"Distractor Purchases: {distractors}",
-            f"Scams Fallen For: {scams}"
-        ]
+        stats = []
+        if distractors:
+            stats.append("Distractors:")
+            for item in distractors:
+                stats.append(f"  - {item}")
+        if scams:
+            stats.append("Scams:")
+            for item in scams:
+                stats.append(f"  - {item}")
         
         for i, stat in enumerate(stats):
             text = self.text_font.render(stat, True, (255, 255, 255))
-            surface.blit(text, (x + 90, stats_y + i * 30))
+            if stat.endswith(":"):  # Heading
+                text_x = x + (self.width - text.get_width()) // 2
+            else:  # Item
+                text_x = x + 20
+            surface.blit(text, (text_x, stats_y + i * 25))
         
         # Continue prompt
         prompt = self.text_font.render("Press SPACE to continue", True, (255, 255, 0))

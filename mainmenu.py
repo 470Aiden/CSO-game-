@@ -2,11 +2,12 @@ import pygame
 import sys
 from buttons import Button
 from farmer_path import farmer_path
+from cutscene import play_farmer_cutscene
 pygame.init()
 pygame.mixer.init()
 
 # Load the music file
-pygame.mixer.music.load('CSO-game-\\caribbean-beach.mp3')
+pygame.mixer.music.load('caribbean-beach.mp3')
 
 # Play the music in a loop
 pygame.mixer.music.play(-1)
@@ -15,7 +16,7 @@ pygame.mixer.music.play(-1)
 screen = pygame.display.set_mode((1170, 720))
 
 # load background image
-menu_bg = pygame.image.load("CSO-game-\\images\\menu_bg.jpg")
+menu_bg = pygame.image.load("images\\menu_bg.jpg")
 screen_width = 1170
 screen_height = 720
 menu_bg = pygame.transform.scale(menu_bg, (screen_width, screen_height))
@@ -31,7 +32,7 @@ def play_screen():
     farmer_frames = []
     try:
         for i in range(0, 8):
-            path = f"CSO-game-\\farmer_frames\\frame_{i:03d}.webp"
+            path = f"farmer_frames\\frame_{i:03d}.webp"
             img = pygame.image.load(path).convert_alpha()
             farmer_frames.append(pygame.transform.scale(img, (150, 150)))
     except Exception:
@@ -60,6 +61,7 @@ def play_screen():
     selected = None
     playing = True
     while playing:
+        pygame.mixer.music.set_volume(0.5)
         dt = pygame.time.Clock().tick(60)
 
         for event in pygame.event.get():
@@ -72,6 +74,15 @@ def play_screen():
                     if rect.collidepoint((mx, my)):
                         selected = idx
                         if idx == 0:
+                            # Play an introductory cutscene for the farmer path,
+                            # then transition into the farmer path game.
+                            try:
+                                play_farmer_cutscene(screen)
+                            except SystemExit:
+                                raise
+                            except Exception:
+                                # If cutscene fails for any reason, fallback to game
+                                pass
                             farmer_path()
                         playing = False
 
@@ -83,7 +94,7 @@ def play_screen():
 
         screen.blit(menu_bg, (0, 0))
         pygame.display.set_caption("Play Screen")
-        play_title = pygame.font.Font("CSO-game-\\Tiny5-Regular.ttf", 54).render("Select Character", True, (255, 255, 255))
+        play_title = pygame.font.Font("Tiny5-Regular.ttf", 54).render("Select Character", True, (255, 255, 255))
         text_rect = play_title.get_rect(center=(screen_width // 2, 140))
         screen.blit(play_title, text_rect)
         mouse = pygame.mouse.get_pos()
@@ -121,10 +132,10 @@ def play_screen():
 def main_menu():
     running = True
     while running:
-
+        pygame.mixer.music.set_volume(0.5)
         screen.blit(menu_bg, (0, 0))
         pygame.display.set_caption("Main Menu")
-        menu_title = pygame.font.Font("CSO-game-\\Tiny5-Regular.ttf", 74).render("Main Menu", True, (255, 255, 255))
+        menu_title = pygame.font.Font("Tiny5-Regular.ttf", 74).render("Main Menu", True, (255, 255, 255))
         text_rect = menu_title.get_rect(center=(screen_width // 2, 150))
         screen.blit(menu_title, text_rect)
         menu_mouse_pos = pygame.mouse.get_pos()

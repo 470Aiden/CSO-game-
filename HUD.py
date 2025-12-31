@@ -2,7 +2,7 @@ import pygame
 
 class HUD:
     def __init__(self):
-        self.font = pygame.font.Font("CSO-game-\\Tiny5-Regular.ttf", 48)
+        self.font = pygame.font.Font("Tiny5-Regular.ttf", 48)
 
         # Bar settings
         self.bar_width = 250
@@ -31,7 +31,7 @@ class HUD:
         # Pixel outline
         pygame.draw.rect(surface, self.pixel_edge, (x, y, self.bar_width, self.bar_height), 3)
     def draw_level_info(self, surface, level):
-        font = pygame.font.Font("CSO-game-\\Tiny5-Regular.ttf", 36)
+        font = pygame.font.Font("Tiny5-Regular.ttf", 36)
 
         text = font.render(f"Level {level.level_num}", True, (255, 255, 255))
         surface.blit(text, (20, 140))

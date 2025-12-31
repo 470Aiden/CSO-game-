@@ -33,10 +33,10 @@ class Character:
         self.x = x
         self.y = y
         self.animations = {
-            'walkleft': self.load_animation('CSO-game-\\farmer_frames\\walk_left.png', 4),
-            'walkright': self.load_animation('CSO-game-\\farmer_frames\\walk_right.png', 4),
-            'walkup': self.load_animation('CSO-game-\\farmer_frames\\walk_up.png', 4),
-            'walkdown': self.load_animation('CSO-game-\\farmer_frames\\walk_down.png', 4),
+            'walkleft': self.load_animation('farmer_frames\\walk_left.png', 4),
+            'walkright': self.load_animation('farmer_frames\\walk_right.png', 4),
+            'walkup': self.load_animation('farmer_frames\\walk_up.png', 4),
+            'walkdown': self.load_animation('farmer_frames\\walk_down.png', 4),
         }
         self.current_animation = 'walkdown'
         self.last_direction = self.current_animation[4:]

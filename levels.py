@@ -46,22 +46,25 @@ class LevelManager:
         self.levels = self.create_levels()
         self.event_images = self.load_event_images()
         
-        # Stats tracking
-        self.essentials_completed = 0
-        self.distractors_bought = 0
-        self.scams_fell_for = 0
+        # Stats tracking (per-level lists)
+        self.essentials_completed = []
+        self.distractors_bought = []
+        self.scams_fell_for = []
+
+        # Cumulative score across levels
+        self.cumulative_score = 0
         
     def load_event_images(self):
         """Load and scale event icons"""
         images = {
-            "Rent Due": pygame.image.load("CSO-game-\\images\\rent due.png").convert_alpha(),
-            "Light Bill": pygame.image.load("CSO-game-\\images\\light bill icon.png").convert_alpha(),
-            "Fertilizer": pygame.image.load("CSO-game-\\images\\fertilizer.png").convert_alpha(),
-            "Water Bill": pygame.image.load("CSO-game-\\images\\water bill.png").convert_alpha(),
-            "Buy Shoes": pygame.image.load("CSO-game-\\images\\shoe.png").convert_alpha(),
-            "Expensive Phone": pygame.image.load("CSO-game-\\images\\phone.png").convert_alpha(),
-            "Lottery Ticket": pygame.image.load("CSO-game-\\images\\lottery ticket.png").convert_alpha(),
-            "Crypto Investment": pygame.image.load("CSO-game-\\images\\crypto.png").convert_alpha(),
+            "Rent Due": pygame.image.load("images\\rent due.png").convert_alpha(),
+            "Light Bill": pygame.image.load("images\\light bill icon.png").convert_alpha(),
+            "Fertilizer": pygame.image.load("images\\fertilizer.png").convert_alpha(),
+            "Water Bill": pygame.image.load("images\\water bill.png").convert_alpha(),
+            "Buy Shoes": pygame.image.load("images\\shoe.png").convert_alpha(),
+            "Expensive Phone": pygame.image.load("images\\phone.png").convert_alpha(),
+            "Lottery Ticket": pygame.image.load("images\\lottery ticket.png").convert_alpha(),
+            "Crypto Investment": pygame.image.load("images\\crypto.png").convert_alpha(),
         }
         
         for k in images:
@@ -105,9 +108,17 @@ class LevelManager:
         """Move to next level"""
         self.current_level += 1
         
-        self.essentials_completed = 0
-        self.distractors_bought = 0
-        self.scams_fell_for = 0
+        self.essentials_completed = []
+        self.distractors_bought = []
+        self.scams_fell_for = []
+
+    def calculate_score(self):
+        """Return numeric score for current level based on tracked lists."""
+        score = 0
+        score += len(self.essentials_completed) * 10
+        score -= len(self.distractors_bought) * 5
+        score -= len(self.scams_fell_for) * 15
+        return score
     
     def spawn_event_for_level(self, level, game_state):
         """Spawn a random event from the current level"""
@@ -144,16 +155,7 @@ class LevelManager:
     
     def calculate_rank(self):
         """Calculate performance rank based on stats"""
-        score = 0
-        
-        # Reward essentials completed
-        score += self.essentials_completed * 10
-        
-        # Penalize distractors
-        score -= self.distractors_bought * 5
-        
-        # Heavy penalty for scams
-        score -= self.scams_fell_for * 15
+        score = self.calculate_score()
         
         # Determine rank
         if score >= 40:

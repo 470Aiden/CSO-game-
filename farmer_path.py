@@ -10,10 +10,11 @@ from levels import LevelManager
 from post_level_stats import EndLevelPopup
 from camera import Camera 
 from drawbackground import draw_background
+from cutscene import play_good_ending, play_bad_ending
 
 pygame.init()
 display = pygame.display.set_mode((1170, 720))
-background = pygame.image.load("CSO-game-\\images\\farm aerial 2.png").convert()
+background = pygame.image.load("images\\farm aerial 2.png").convert()
 pygame.display.set_caption("Money Moves")
 hud = HUD()
 background = pygame.transform.scale(background, (2000, 1500))
@@ -55,6 +56,7 @@ def farmer_path():
     sprite_height = max(f.get_height() for frames in player.animations.values() for f in frames)
     
     while running:
+        pygame.mixer.music.set_volume(0.5)
         # Events
         for e in pygame.event.get():
             if e.type == pygame.QUIT:
@@ -65,9 +67,16 @@ def farmer_path():
                 if showing_popup and e.key == pygame.K_SPACE:
                     # Move to next level
                     game_state.savings = game_state.max_savings
+                    # Add this level's numeric score to cumulative total
+                    try:
+                        level_score = level_manager.calculate_score()
+                    except Exception:
+                        level_score = 0
+                    level_manager.cumulative_score += level_score
                     level_manager.next_level()
+
                     current_level = level_manager.get_current_level()
-                    
+
                     if current_level:
                         # Start next level
                         current_level.start()
@@ -75,8 +84,18 @@ def farmer_path():
                         showing_popup = False
                         level_complete = False
                     else:
-                        # Game complete!
-                        print("Game completed! All levels finished!")
+                        # Game complete! Decide which ending to show based on average score
+                        num_levels = len(level_manager.levels) if level_manager.levels else 1
+                        avg_score = level_manager.cumulative_score / num_levels
+                        # B threshold is average >= 20
+                        try:
+                            if avg_score >= 20:
+                                play_good_ending(display)
+                            else:
+                                play_bad_ending(display)
+                        except Exception:
+                            # If cutscene fails, fallback to ending silently
+                            pass
                         running = False
 
         # Only update game if not showing popup
@@ -129,11 +148,11 @@ def farmer_path():
                             # Track stats based on event type
                             if hasattr(event, 'event_type'):
                                 if event.event_type == "essential":
-                                    level_manager.essentials_completed += 1
+                                    level_manager.essentials_completed.append(event.name)
                                 elif event.event_type == "distractor":
-                                    level_manager.distractors_bought += 1
+                                    level_manager.distractors_bought.append(event.name)
                                 elif event.event_type == "scam":
-                                    level_manager.scams_fell_for += 1
+                                    level_manager.scams_fell_for.append(event.name)
                         else:
                             print("Not enough money!")
 
@@ -199,7 +218,7 @@ def farmer_path():
         # Draw level timer
         if current_level:
             remaining = int(current_level.get_remaining_time())
-            timer_font = pygame.font.Font("CSO-game-\\Tiny5-Regular.ttf", 36)
+            timer_font = pygame.font.Font("Tiny5-Regular.ttf", 36)
             timer_text = timer_font.render(f"Time: {remaining}s", True, (255, 255, 255))
             display.blit(timer_text, (20, 100))
             
