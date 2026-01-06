@@ -9,8 +9,10 @@ pygame.mixer.init()
 # Load the music file
 pygame.mixer.music.load('caribbean-beach.mp3')
 
-# Play the music in a loop
+# Play the music in a loop at 50% volume
+pygame.mixer.music.set_volume(0.2)
 pygame.mixer.music.play(-1)
+
 
 # Set up the display
 screen = pygame.display.set_mode((1170, 720))
@@ -61,7 +63,7 @@ def play_screen():
     selected = None
     playing = True
     while playing:
-        pygame.mixer.music.set_volume(0.5)
+        
         dt = pygame.time.Clock().tick(60)
 
         for event in pygame.event.get():
@@ -132,7 +134,7 @@ def play_screen():
 def main_menu():
     running = True
     while running:
-        pygame.mixer.music.set_volume(0.5)
+        
         screen.blit(menu_bg, (0, 0))
         pygame.display.set_caption("Main Menu")
         menu_title = pygame.font.Font("Tiny5-Regular.ttf", 74).render("Money Moves", True, (255, 255, 255))
