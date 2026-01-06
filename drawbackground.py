@@ -1,22 +1,34 @@
-import pygame 
+import pygame
 
-def draw_background(screen, background, cam_x, cam_y, world_width, world_height):
+
+def draw_background(screen, background, cam_rect, world_width, world_height):
     """
-    Draws a non-repeating background relative to the camera position.
-    cam_x, cam_y: center of the camera in world coordinates
+    Draw a non-repeating background using the camera viewport rect.
+
+    cam_rect: a pygame.Rect in world coordinates representing the
+    viewport (x, y, width, height). This handles zoom by using the
+    viewport size rather than assuming screen size equals world-region.
     """
     screen_width, screen_height = screen.get_size()
-    
-    # Calculate the top-left corner of the portion to draw
-    left = int(cam_x - screen_width // 2)
-    top = int(cam_y - screen_height // 2)
+
+    # Viewport size in world coordinates
+    cam_w = int(cam_rect.width)
+    cam_h = int(cam_rect.height)
+
+    # Top-left of viewport in world coords
+    left = int(cam_rect.x)
+    top = int(cam_rect.y)
 
     # Clamp to world bounds
-    left = max(0, min(left, world_width - screen_width))
-    top = max(0, min(top, world_height - screen_height))
+    left = max(0, min(left, max(0, world_width - cam_w)))
+    top = max(0, min(top, max(0, world_height - cam_h)))
 
-    # Create a rect for the portion of the background to blit
-    bg_rect = pygame.Rect(left, top, screen_width, screen_height)
-    
-    # Blit only this portion
-    screen.blit(background, (0, 0), bg_rect)
+    # Rect of the background to sample
+    bg_rect = pygame.Rect(left, top, cam_w, cam_h)
+
+    # Extract the portion and scale to the screen if viewport != screen
+    portion = background.subsurface(bg_rect).copy()
+    if (cam_w, cam_h) != (screen_width, screen_height):
+        portion = pygame.transform.scale(portion, (screen_width, screen_height))
+
+    screen.blit(portion, (0, 0))

@@ -135,7 +135,7 @@ def main_menu():
         pygame.mixer.music.set_volume(0.5)
         screen.blit(menu_bg, (0, 0))
         pygame.display.set_caption("Main Menu")
-        menu_title = pygame.font.Font("Tiny5-Regular.ttf", 74).render("Main Menu", True, (255, 255, 255))
+        menu_title = pygame.font.Font("Tiny5-Regular.ttf", 74).render("Money Moves", True, (255, 255, 255))
         text_rect = menu_title.get_rect(center=(screen_width // 2, 150))
         screen.blit(menu_title, text_rect)
         menu_mouse_pos = pygame.mouse.get_pos()

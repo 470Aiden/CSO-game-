@@ -24,12 +24,6 @@ def play_farmer_cutscene(screen, clock=None):
             bg = None
 
     # If no background found, create a simple placeholder
-    screen_w, screen_h = screen.get_size()
-    if bg:
-        bg = pygame.transform.scale(bg, (screen_w, screen_h))
-    else:
-        bg = pygame.Surface((screen_w, screen_h))
-        bg.fill((100, 160, 100))
 
     # Text to display (word-by-word)
     full_text = (
@@ -38,7 +32,7 @@ def play_farmer_cutscene(screen, clock=None):
     )
     words = full_text.split()
 
-    # Font: use game font (Tiny5-Regular.ttf) if available
+   
     try:
         font = pygame.font.Font("Tiny5-Regular.ttf", 28)
     except Exception:

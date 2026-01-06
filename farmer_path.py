@@ -172,7 +172,7 @@ def farmer_path():
 
         
         
-        draw_background(display, background, player_center_x, player_center_y, world_width, world_height)
+        draw_background(display, background, camera.camera, world_width, world_height)
 
          # Draw events
         for event in game_state.events:
