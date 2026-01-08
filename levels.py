@@ -42,7 +42,7 @@ class LevelManager:
     """Manages level progression and difficulty"""
     
     def __init__(self):
-        self.current_level = 1
+        self.current_level = 0
         self.levels = self.create_levels()
         self.event_images = self.load_event_images()
         
@@ -141,8 +141,8 @@ class LevelManager:
         event_type, name, cost, time_limit = random.choice(all_events)
         
         # Random position
-        x = random.randint(400, 1500)
-        y = random.randint(300, 1200)
+        x = random.randint(450, 850)
+        y = random.randint(420, 900)
         
         # Get image
         img = self.event_images.get(name, self.event_images["Rent Due"])

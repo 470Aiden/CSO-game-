@@ -15,12 +15,12 @@ pygame.mixer.music.play(-1)
 
 
 # Set up the display
-screen = pygame.display.set_mode((1170, 720))
+screen = pygame.display.set_mode((1170, 720),pygame.FULLSCREEN)
 
 # load background image
 menu_bg = pygame.image.load("images\\menu_bg.jpg")
-screen_width = 1170
-screen_height = 720
+screen_width = screen.get_width()
+screen_height = screen.get_height()
 menu_bg = pygame.transform.scale(menu_bg, (screen_width, screen_height))
 # create buttons
 play_button = Button((screen_width // 2) - 100, 250, 200, 50, "Play", (25, 176, 70))
@@ -70,6 +70,9 @@ def play_screen():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    playing = False
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                 mx, my = pygame.mouse.get_pos()
                 for idx, rect in enumerate(slot_rects):
@@ -160,6 +163,9 @@ def main_menu():
                 if options_button.is_clicked(menu_mouse_pos):
                     print("Options button clicked")
                 if quit_button.is_clicked(menu_mouse_pos):
+                    running = False
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
                     running = False
             
 

@@ -5,13 +5,16 @@ import time
 def play_farmer_cutscene(screen, clock=None):
     """Play a short cutscene with a background image and animated text.
 
-    - Uses `images/new farm 1.png` if available, falls back to other farm images.
+    - Uses `images/farmer intro.png` if available, falls back to other farm images.
     - Text appears one word at a time. Press SPACE or click to skip once finished.
     """
     if clock is None:
         clock = pygame.time.Clock()
 
-    # Try a few likely image names (project already contains several farm images)
+    # Get screen dimensions
+    screen_w, screen_h = screen.get_size()
+
+    # Try to load background image
     candidates = [
         "images\\farmer intro.png"
     ]
@@ -19,11 +22,15 @@ def play_farmer_cutscene(screen, clock=None):
     for path in candidates:
         try:
             bg = pygame.image.load(path).convert()
+            bg = pygame.transform.scale(bg, (screen_w, screen_h))  # Scale to fullscreen
             break
         except Exception:
             bg = None
 
     # If no background found, create a simple placeholder
+    if bg is None:
+        bg = pygame.Surface((screen_w, screen_h))
+        bg.fill((30, 80, 30))
 
     # Text to display (word-by-word)
     full_text = (
@@ -32,15 +39,14 @@ def play_farmer_cutscene(screen, clock=None):
     )
     words = full_text.split()
 
-   
     try:
         font = pygame.font.Font("Tiny5-Regular.ttf", 28)
     except Exception:
         font = pygame.font.SysFont(None, 28)
 
-    # Text box settings
-    box_h = 140
-    box_margin = 20
+    # Text box settings - scale with screen size
+    box_h = min(140, int(screen_h * 0.2))  # 20% of screen height, max 140
+    box_margin = int(screen_w * 0.02)  # 2% of screen width for margin
     box_rect = pygame.Rect(
         box_margin,
         screen_h - box_h - box_margin,
@@ -93,7 +99,6 @@ def play_farmer_cutscene(screen, clock=None):
         # Draw textbox (semi-transparent)
         s = pygame.Surface((box_rect.w, box_rect.h), pygame.SRCALPHA)
         s.fill((20, 20, 30, 220))
-        # border
         screen.blit(s, (box_rect.x, box_rect.y))
         pygame.draw.rect(screen, (200, 180, 40), box_rect, 3)
 
@@ -175,6 +180,10 @@ def _play_simple_ending(screen, clock=None, title_text="", body_text="", color=(
     finished = False
     finish_time = None
 
+    # Calculate margins based on screen size
+    side_margin = int(screen_w * 0.1)  # 10% margin on each side
+    max_text_width = screen_w - (side_margin * 2)
+
     running = True
     while running:
         dt = clock.tick(60)
@@ -206,10 +215,13 @@ def _play_simple_ending(screen, clock=None, title_text="", body_text="", color=(
                 finish_time = now
 
         screen.blit(bg, (0, 0))
-        # draw title
-        screen.blit(title_surf, ((screen_w - title_surf.get_width()) // 2, 80))
+        
+        # Draw title
+        title_x = (screen_w - title_surf.get_width()) // 2
+        title_y = int(screen_h * 0.15)  # 15% from top
+        screen.blit(title_surf, (title_x, title_y))
 
-        # build visible text and wrap
+        # Build visible text and wrap
         visible = " ".join(words[:words_shown])
         lines = []
         if visible:
@@ -217,7 +229,7 @@ def _play_simple_ending(screen, clock=None, title_text="", body_text="", color=(
             for w in visible.split():
                 test = (cur + " " + w).strip()
                 ts = body_font.render(test, True, (255, 255, 255))
-                if ts.get_width() <= screen_w - 120:
+                if ts.get_width() <= max_text_width:
                     cur = test
                 else:
                     lines.append(cur)
@@ -225,15 +237,18 @@ def _play_simple_ending(screen, clock=None, title_text="", body_text="", color=(
             if cur:
                 lines.append(cur)
 
-        ty = 160
+        # Render body text
+        ty = int(screen_h * 0.3)  # Start at 30% from top
         for line in lines:
             surf = body_font.render(line, True, (255, 255, 255))
-            screen.blit(surf, (60, ty))
+            screen.blit(surf, (side_margin, ty))
             ty += surf.get_height() + 8
 
         if finished:
             prompt = body_font.render("Press SPACE or click to continue", True, (255, 220, 0))
-            screen.blit(prompt, ((screen_w - prompt.get_width()) // 2, screen_h - 80))
+            prompt_x = (screen_w - prompt.get_width()) // 2
+            prompt_y = int(screen_h * 0.9)  # 90% from top (10% from bottom)
+            screen.blit(prompt, (prompt_x, prompt_y))
 
         pygame.display.flip()
 
@@ -257,4 +272,3 @@ def play_bad_ending(screen, clock=None):
         "and avoiding costly distractions in future playthroughs."
     )
     _play_simple_ending(screen, clock, title, body, color=(60, 30, 30), bg_path="images\\farmer bad ending (2).png")
-
