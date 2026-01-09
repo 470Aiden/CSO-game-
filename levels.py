@@ -42,7 +42,7 @@ class LevelManager:
     """Manages level progression and difficulty"""
     
     def __init__(self):
-        self.current_level = 0
+        self.current_level = 1
         self.levels = self.create_levels()
         self.event_images = self.load_event_images()
         

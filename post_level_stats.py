@@ -33,7 +33,7 @@ class EndLevelPopup:
         rank_color = rank_colors.get(rank, (255, 255, 255))
         if rank =="S":
             rank_text = self.title_font.render(f"Rank: {rank}  ", True, rank_color)
-            line1 = self.title_font.render("money spent purely ", True, rank_color)
+            line1 = self.title_font.render("money spent mostly ", True, rank_color)
             line2 = self.title_font.render("on essentials!", True, rank_color)
             surface.blit(rank_text, (x + 170, y + 90))
             surface.blit(line1, (x + 20, y + 130))
