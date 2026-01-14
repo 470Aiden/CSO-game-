@@ -32,6 +32,7 @@ HOW TO RUN THE CODE:
 - WASD or arrow keuys - Move character
 - E - Interact with events
 - SPACE - Continue to next level
+- ESC - pause the game 
 
 ### Challenge Category
 Money movement, fintech, financial education
